@@ -1,0 +1,38 @@
+module Series1
+
+import lang::java::jdt::m3::AST;
+import lang::java::jdt::m3::Core;
+import analysis::m3::Core;
+import analysis::m3::metrics::LOC;
+import IO;
+import Set;
+
+map[str language, int count] countLinesOfCode(loc location){
+		
+	projectTree = createM3FromEclipseProject(location);			
+	linesOfCode2 = countSourceLocPerLanguage(projectTree);
+	
+	return linesOfCode2;
+}
+
+void computeMetrics(){
+	testProjectLocation = |project://test_java_project|;
+	smallSqlProjectLocation = |project://smallsql0.21_src|;
+	hsqldbProjectLocation = |project://hsqldb-2.3.1|;
+	
+	// compute LOC - write your own method?
+	testProjectLOC = countLinesOfCode(testProjectLocation);
+	print("Test project: "); println(testProjectLOC["java"]);
+	
+	//smallSqlProjectLOC = countLinesOfCode(smallSqlProjectLocation);	
+	//print("Small sql project: "); println(smallSqlProjectLOC["java"]);
+	
+	hsqldbProjectLOC = countLinesOfCode(hsqldbProjectLocation);	
+	print("Hsqldb project: "); println(hsqldbProjectLOC["java"]);
+	
+	// compute complexity per unit
+	
+	// compute duplication
+	
+	// compute unit size (LOC / unit)		
+}

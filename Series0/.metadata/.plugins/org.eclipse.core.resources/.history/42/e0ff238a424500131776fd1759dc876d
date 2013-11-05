@@ -1,0 +1,16 @@
+module first_module
+
+import IO;
+
+//text = ["andra", "moi", "ennepe", "Mousa", "polutropon"];
+public int count(list[str] text){
+  n = 0;
+  for(s <- text) {
+    if(/a/ := s) {
+      print("a found in "); print(s);
+      println();
+      n +=1;
+    }
+  }
+  return n;
+  }

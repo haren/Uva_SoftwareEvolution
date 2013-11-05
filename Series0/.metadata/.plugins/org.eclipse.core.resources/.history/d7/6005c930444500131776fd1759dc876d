@@ -1,0 +1,23 @@
+module first_module
+
+import IO;
+
+//text = ["andra", "moi", "ennepe", "Mousa", "polutropon"];
+
+public list[str] find2(list[str] text){
+  return 
+    for(s <- text)
+      if(/o/ := s)
+        append s;        
+}
+
+//text = ["the", "jaws", "that", "bite", "the", "claws", "that", "catch"];
+public list[str] duplicates2(list[str] text){
+    m = {};
+    return 
+      for(s <- text)
+        if(s notin m)
+           append s;
+        else
+           m += s;
+}

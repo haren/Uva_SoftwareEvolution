@@ -1,0 +1,12 @@
+module first_module
+
+import IO;
+
+//text = ["andra", "moi", "ennepe", "Mousa", "polutropon"];
+
+public list[str] find(list[str] text){
+  return 
+    for(s <- text)
+      if(/o/ := s)
+        yield s;        
+}

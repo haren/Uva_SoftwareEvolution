@@ -1,0 +1,416 @@
+[
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "af40efd1aad4e7e995500e66d8832cc4e380fce5",
+    "jarFileModificationDate": "2013-10-28T13:41:56.794+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\rt.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "slf4j.nop",
+    "version": {
+      "major": 1,
+      "minor": 7,
+      "micro": 5,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "ba4717727fabc95c2dfbc431ee1ec64f692e3f73",
+    "jarFileModificationDate": "2013-03-25T21:51:30+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\slf4j-nop-1.7.5.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "4b49dbbd63bac98e1b02fd5ad398dea471cd41ed",
+    "jarFileModificationDate": "2013-10-28T13:41:40.623+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\resources.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "a3d1a9689f1c8e36ab64fb669df92076771c42f2",
+    "jarFileModificationDate": "2013-10-28T13:41:40.446+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\sunmscapi.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "junit",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "4e031bb61df09069aeb2bffb4019e7a5034a4ee0",
+    "jarFileModificationDate": "2013-05-17T18:05:12+02:00",
+    "location": "C:\\Eclipse\\eclipse\\plugins\\org.junit_4.11.0.v201303080030\\junit.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "junit-3.8.1",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "99129f16442844f6a4a11ae22fbbee40b14d774f",
+    "jarFileModificationDate": "2013-11-04T14:00:42+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\smallsql0.21_src\\lib\\junit-3.8.1.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "dce79bf6370699defcec5c104af7ceb7417cfaeb",
+    "jarFileModificationDate": "2013-10-28T13:41:49.181+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\jsse.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "bc3be927c6d96fe2b53745052cd354cfa6fa5e47",
+    "jarFileModificationDate": "2013-10-28T13:41:57.031+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\localedata.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "a22ccb0236f5d475302a3f538d923d6cf05c68cd",
+    "jarFileModificationDate": "2013-10-28T13:41:40.420+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\access-bridge-64.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "org.eclipse.imp.pdb.values",
+    "version": {
+      "major": 0,
+      "minor": 4,
+      "micro": 1,
+      "qualifier": "201310280859"
+    },
+    "jarFileFingerprint": "cc07a6561f6f5c86bc2aa1598563c269283be34e",
+    "jarFileModificationDate": "2013-10-28T13:56:51.198+01:00",
+    "location": "C:\\Eclipse\\eclipse\\plugins\\org.eclipse.imp.pdb.values_0.4.1.201310280859.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "gradle-javaPropFile-plugin-0.6.0",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "744428ed5fb427552c03433caccb37596bb70063",
+    "jarFileModificationDate": "2012-10-25T20:37:50+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\build\\gradle-javaPropFile-plugin-0.6.0.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "org.apache.commons.logging",
+    "version": {
+      "major": 1,
+      "minor": 1,
+      "micro": 3,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f",
+    "jarFileModificationDate": "2013-05-16T23:04:50+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\commons-logging-1.1.3.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "slf4j.api",
+    "version": {
+      "major": 1,
+      "minor": 7,
+      "micro": 5,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "04a1c54e213b8a3ae375b7b0ef95791bcac61c71",
+    "jarFileModificationDate": "2013-03-25T21:51:30+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\slf4j-api-1.7.5.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "gradle-ivyxml-plugin-0.3.2",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "e518cb1c680f0046189615dd39774af2f3663f68",
+    "jarFileModificationDate": "2012-10-25T20:37:50+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\build\\gradle-ivyxml-plugin-0.3.2.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "3800223b66f57bc4daff4bbd398a65020d901d82",
+    "jarFileModificationDate": "2013-10-28T13:41:40.545+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\jfr.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "gradle-wrapper",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "24262cc91673acafd6c0b64458bad67dc0b7e4a1",
+    "jarFileModificationDate": "2013-09-21T13:36:10+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\build\\gradle\\wrapper\\gradle-wrapper.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "org.apache.commons.logging",
+    "version": {
+      "major": 1,
+      "minor": 1,
+      "micro": 3,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "4d549b8ad369bfae94ba3ba6a6d8c0cb4524e0dd",
+    "jarFileModificationDate": "2013-05-16T23:04:52+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\commons-logging-api-1.1.3.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "5978bc159419ed07f2a57488d10e91f4fd1e3c40",
+    "jarFileModificationDate": "2013-10-28T13:41:40.422+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\dnsns.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "rascal",
+    "version": {
+      "major": 0,
+      "minor": 6,
+      "micro": 1,
+      "qualifier": "201311041236"
+    },
+    "jarFileFingerprint": "843192363e27b721cc1c9fc3a4fd033ef8dddf98",
+    "jarFileModificationDate": "2013-11-04T15:52:02.181+01:00",
+    "location": "C:\\Eclipse\\eclipse\\plugins\\rascal_0.6.1.201311041236.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "290db2acdf8d82a3a8c351ce030e0c19ff93b003",
+    "jarFileModificationDate": "2013-10-28T13:41:40.426+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\jaccess.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "97e3bcb13f325218fcf9d2286aa7ce6e8c231b7a",
+    "jarFileModificationDate": "2013-10-28T13:41:40.442+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\sunjce_provider.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "org.yaml.snakeyaml",
+    "version": {
+      "major": 1,
+      "minor": 11,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "8f33a218f0bcad15223dd8c3af31f1b65c80c7a7",
+    "jarFileModificationDate": "2013-11-04T15:53:36.110+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\.metadata\\.plugins\\org.eclipse.pde.core\\.external_libraries\\rascal_0.6.1.201311041236\\lib\\snakeyaml-1.11.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "test_project",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileModificationDate": "2013-11-04T11:58:21.908+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\test_project\\src",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "95dc9053062d68cde4e8c38494cc63aefd7b0a42",
+    "jarFileModificationDate": "2013-10-28T13:41:40.438+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\sunec.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "Series1",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileModificationDate": "2013-11-04T13:31:34.139+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\Series1\\src",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "0b059624e2a7e7dfce075cd0313304d747301d01",
+    "jarFileModificationDate": "2013-10-28T13:41:47.658+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\charsets.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "f4150db54a3200189411d612ea21ce4a8a614bb3",
+    "jarFileModificationDate": "2013-10-28T13:41:40.449+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\ext\\zipfs.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "sqltool",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "b8f27dd42b567b55bd2bb4d5ee3eab4b1d129c0e",
+    "jarFileModificationDate": "2013-10-07T23:52:54+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\sqltool.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "org.hsqldb.hsqldb",
+    "version": {
+      "major": 2,
+      "minor": 3,
+      "micro": 1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "bd7153caa30958e1c64a3dd38b93e5a7442d9a0e",
+    "jarFileModificationDate": "2013-10-07T23:52:56+02:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\hsqldb.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "org.hamcrest.core",
+    "version": {
+      "major": 1,
+      "minor": 3,
+      "micro": 0,
+      "qualifier": "v201303031735"
+    },
+    "jarFileFingerprint": "5ed9fe32ab1d2b18bec7cac0a044090100f327ba",
+    "jarFileModificationDate": "2013-09-19T10:47:58+02:00",
+    "location": "C:\\Eclipse\\eclipse\\plugins\\org.hamcrest.core_1.3.0.v201303031735.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "org.hibernate.hibernate-envers",
+    "version": {
+      "major": 3,
+      "minor": 6,
+      "micro": 10,
+      "qualifier": "Final"
+    },
+    "jarFileFingerprint": "19a0895351d2877325532e7ea619b50b60bf44fd",
+    "jarFileModificationDate": "2012-02-08T19:33:28+01:00",
+    "location": "C:\\Users\\lukas_000\\Dropbox\\Studia\\UvA\\SofwareEvolution\\Labs\\Series0\\hsqldb-2.3.1\\hsqldb\\lib\\hibernate3.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "f831655c50b92c41e366442d09511ea84270c45e",
+    "jarFileModificationDate": "2013-10-28T13:41:40.532+01:00",
+    "location": "C:\\Program Files\\Java\\jdk1.7.0_45\\jre\\lib\\jce.jar",
+    "javaRuntime": true
+  }
+]
