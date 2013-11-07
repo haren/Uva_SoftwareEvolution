@@ -7,6 +7,7 @@ import analysis::m3::metrics::LOC;
 import IO;
 import Set;
 import List;
+import String;
 
 int countLinesOfCode(M3 m3){				
 	linesOfCode2 = countSourceLocPerLanguage(m3);	
@@ -24,9 +25,32 @@ map[str method, int count] countLinesOfCodePerMethod(M3 m3) {
 	 methodsList = methods(m3);
 	 
 	 for (method <- methodsList) {
-	 	methodLoc = size(readFileLines(method));
-	 	//filter out empty lines
-	 	print(method); print(": "); println(methodLoc);
+	 	methodLoc = readFileLines(method);
+	 	methodSloc = 0;
+	 	multilineComment = false;
+	 	
+	 	for (methodLine <- methodLoc) {
+	 		trimmedLine = trim(methodLine);
+ 		  	 
+	 		if (size(trimmedLine) > 0 //filter out single lines
+	 			//filter out single line comments 
+	 			&& ((size(trimmedLine) > 1 && substring(trimmedLine,0,2) != "//") || size(trimmedLine) == 1)
+	 			//filter out multiline comments
+	 			&& !multilineComment) {
+	 			// check if multiline comment is starting 
+	 			if (size(trimmedLine) > 1 && substring(trimmedLine,0,2) == "/*") {
+	 				multilineComment = true;
+	 			}
+	 			else {
+	 				methodSloc += 1;
+	 			}
+	 		}
+	 		if (multilineComment 
+	 			&& (size(trimmedLine) > 1 && substring(trimmedLine,0,2) == "*/")){
+	 			multilineComment = false;	 		
+	 		}
+	 	}
+	 	print(method); print(": "); println(methodSloc);
 	 }
 	 
 	 return result;
