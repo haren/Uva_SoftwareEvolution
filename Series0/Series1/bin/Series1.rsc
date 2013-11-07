@@ -14,11 +14,6 @@ int countLinesOfCode(M3 m3){
 	return linesOfCode2["java"];
 }
 
-list[str] filterOutEmptyAndCommentLines(list[str] lines){
-	//TODO : filter out empty lines and comments
-	return lines;
-}
-
 map[str method, int count] countLinesOfCodePerMethod(M3 m3) {
 	 map[str, int] result = ();
 	 	 
@@ -31,7 +26,7 @@ map[str method, int count] countLinesOfCodePerMethod(M3 m3) {
 	 	
 	 	for (methodLine <- methodLoc) {
 	 		trimmedLine = trim(methodLine);
- 		  	 
+ 		  	// todo: Move validation to a separate function
 	 		if (size(trimmedLine) > 0 //filter out single lines
 	 			//filter out single line comments 
 	 			&& ((size(trimmedLine) > 1 && substring(trimmedLine,0,2) != "//") || size(trimmedLine) == 1)
