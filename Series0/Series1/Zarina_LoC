@@ -40,6 +40,7 @@ public int countLineOfCodeInProject(loc project){
        // Count comments & empty lines
        if(startsWith(trim(fileContent[i]), "//") ||
           startsWith(trim(fileContent[i]), "/**") || 
+          startsWith(trim(fileContent[i]), "/*") ||
           startsWith(trim(fileContent[i]), "*") ||
           startsWith(trim(fileContent[i]), "*/") ||
           isEmpty(trim(fileContent[i])) ) {
