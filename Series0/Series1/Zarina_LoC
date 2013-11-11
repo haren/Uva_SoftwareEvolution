@@ -1,11 +1,9 @@
-module FirstTest
+module LinesOfCodes
 
-import analysis::m3::Core;
-import lang::java::jdt::m3::Core;
-import lang::java::jdt::m3::AST;
 import IO;
 import List;
 import String;
+import util::FileSystem;
 
 public loc project1 = |project://LittleJavaProject/|;
 public loc project2 = |project://smallsql0.21_src/|;
@@ -14,6 +12,7 @@ public loc project3 = |project://hsqldb-2.3.1/|;
 // Search and put in a list all .java files from a project.
 public list[loc] getFilesFromProject(loc dir) {
   listFiles = [];
+
   for(str entry <- listEntries(dir)){
       loc sub = dir + entry;   
       if(isDirectory(sub)) {
@@ -25,22 +24,30 @@ public list[loc] getFilesFromProject(loc dir) {
       }
   };
   return listFiles;
+  
+}
+
+// This method replaces getFilesFromProject, so less codes...!
+public list[loc] getJavaFiles (loc dir){
+ return listJavaFiles = [ l | /file(l)  := crawl(dir), l.extension == "java"];
 }
 
 //Counts lines of codes in all files, without comments & empty lines.
 public int countLineOfCodeInProject(loc project){
-  list[loc] allJavaFiles = getFilesFromProject(project); 
   int count = 0;
   int countUseless = 0;
-  
+  list[loc] allJavaFiles = getJavaFiles(project);
+
+ 
   for(content <- allJavaFiles){
+  	// List of all lines from certain .java file
   	list[str]fileContent = readFileLines(content);
   
    for(i <- [0..size(readFileLines(content))]){
        // Count comments & empty lines
        if(startsWith(trim(fileContent[i]), "//") ||
           startsWith(trim(fileContent[i]), "/**") || 
-          startsWith(trim(fileContent[i]), "/*") ||
+          startsWith(trim(fileContent[i]), "/*") || 
           startsWith(trim(fileContent[i]), "*") ||
           startsWith(trim(fileContent[i]), "*/") ||
           isEmpty(trim(fileContent[i])) ) {
@@ -59,3 +66,4 @@ public int countLineOfCodeInProject(loc project){
 void info(loc project) {
   printlnExp("The amount of LOC without empty lines and comments: ",countLineOfCodeInProject(project));
 }
+
