@@ -1,5 +1,6 @@
 module LinesOfCodes
 
+
 import IO;
 import List;
 import String;
@@ -9,25 +10,7 @@ public loc project1 = |project://LittleJavaProject/|;
 public loc project2 = |project://smallsql0.21_src/|;
 public loc project3 = |project://hsqldb-2.3.1/|;
 
-// Search and put in a list all .java files from a project.
-public list[loc] getFilesFromProject(loc dir) {
-  listFiles = [];
 
-  for(str entry <- listEntries(dir)){
-      loc sub = dir + entry;   
-      if(isDirectory(sub)) {
-          listFiles += getFilesFromProject(sub + "/");
-      } else {
-	      if(endsWith(entry, ".java")) { 
-	         listFiles += [sub]; 
-	      }
-      }
-  };
-  return listFiles;
-  
-}
-
-// This method replaces getFilesFromProject, so less codes...!
 public list[loc] getJavaFiles (loc dir){
  return listJavaFiles = [ l | /file(l)  := crawl(dir), l.extension == "java"];
 }
@@ -35,30 +18,37 @@ public list[loc] getJavaFiles (loc dir){
 //Counts lines of codes in all files, without comments & empty lines.
 public int countLineOfCodeInProject(loc project){
   int count = 0;
-  int countUseless = 0;
+  int count_comments = 0;
   list[loc] allJavaFiles = getJavaFiles(project);
-
+  multipleLineComments = false;
  
   for(content <- allJavaFiles){
   	// List of all lines from certain .java file
-  	list[str]fileContent = readFileLines(content);
-  
-   for(i <- [0..size(readFileLines(content))]){
-       // Count comments & empty lines
-       if(startsWith(trim(fileContent[i]), "//") ||
-          startsWith(trim(fileContent[i]), "/**") || 
-          startsWith(trim(fileContent[i]), "/*") || 
-          startsWith(trim(fileContent[i]), "*") ||
-          startsWith(trim(fileContent[i]), "*/") ||
-          isEmpty(trim(fileContent[i])) ) {
+   list[str]fileContent = readFileLines(content);
+   
+   for(i <- [0..size(fileContent)]){
+   		//count all lines.
+   		count +=1;
         
-        countUseless +=1;
-       }  
-     count += 1; 
+        //check for multiple line comments starter
+        if(multipleLineComments==false && size(fileContent[i])>1 && 
+          startsWith(trim(fileContent[i]),"/*")) {     		 
+      		multipleLineComments = true; 		 
+       } 
+       // change state if multiple line comment ends. 
+       if(size(fileContent[i])>0 && startsWith(trim(fileContent[i]), "*/")) {
+       		count_comments +=1;
+      		 multipleLineComments = false;
+       }
+       // Counts lines in multiple-line comments, empty lines and single line comments
+       if (multipleLineComments == true || 
+          startsWith(trim(fileContent[i]), "//") || isEmpty(trim(fileContent[i]))) { 
+        count_comments +=1; 
+        }
    }
   }
   // total LOC minus counted lines of comments & empty lines
-  return (count - countUseless);
+  return count - count_comments;
 }
 
 
@@ -66,4 +56,6 @@ public int countLineOfCodeInProject(loc project){
 void info(loc project) {
   printlnExp("The amount of LOC without empty lines and comments: ",countLineOfCodeInProject(project));
 }
+
+
 
