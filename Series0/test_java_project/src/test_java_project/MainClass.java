@@ -7,6 +7,9 @@ public class MainClass {
 	
 	public static void method1(){
 		System.out.println("I am method 1!");
+		if(true) {
+			System.out.println("True!");			
+		}
 		
 		
 		// dupa gowno cycki

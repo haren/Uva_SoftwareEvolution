@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value=" map[str, int] result = ();" key="selection"/>
+		<item value="classPathForProject" key="selection"/>
 		<list key="findhistory">
+			<item value="result"/>
+			<item value="classPathForProject"/>
+			<item value="entity"/>
 			<item value="createM3FromEclipseProject"/>
 			<item value=" map[str, int] result = ();"/>
 			<item value="map"/>
 			<item value="lines"/>
 			<item value="checkForSourceLines"/>
-			<item value="countFileTotalLoc"/>
-			<item value="countsource"/>
-			<item value="countSource"/>
 		</list>
 		<list key="replacehistory">
 		</list>
