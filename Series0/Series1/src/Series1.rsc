@@ -65,6 +65,7 @@ public int countLineOfCodeInProject(loc project){
 }
 
 str computeRatingLinesOfCode(int count, ratingSchema){	
+	println(count);
 	if (count < ratingSchema["VERY_GOOD"]) {
 		return "++";
 	} else if (count < ratingSchema["GOOD"]) {
@@ -179,12 +180,12 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 	for (method <- methodsList) {
 		cyclomaticComplexity = 1;
 		
-		//methodTree = getMethodASTEclipse(method);
+		methodTree = getMethodASTEclipse(method);
 		
-		//visit(methodTree) {
-		//	case \if : println("MAMY IFA");
-		//	case \for : println("Mamygo!");
-		//}
+		visit(methodTree) {
+			case \if : println("MAMY IFA");
+			case \for : println("Mamygo!");
+		}
 		
 		result[method] = cyclomaticComplexity;
 		
@@ -202,7 +203,7 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
  		//  		cyclomaticComplexity += 1;
  		//  	}
 	 	//}
-	 	print(method); print(": "); println(cyclomaticComplexity); 
+	 	//print(method); print(": "); println(cyclomaticComplexity); 
 	 	
 	 }
 	
