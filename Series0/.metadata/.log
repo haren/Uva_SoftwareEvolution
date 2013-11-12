@@ -1509,3 +1509,6 @@ org.eclipse.core.internal.resources.ResourceException: Resource already exists o
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
 !SUBENTRY 1 org.eclipse.core.resources 4 272 2013-11-12 10:53:21.060
 !MESSAGE Resource already exists on disk: '/Series1/bin/Series1.rsc'.
+
+!ENTRY rascal_eclipse 4 0 2013-11-12 14:03:57.664
+!MESSAGE can not open link

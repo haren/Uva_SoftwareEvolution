@@ -8,10 +8,74 @@ import IO;
 import Set;
 import List;
 import String;
+import util::FileSystem;
 
 int countLinesOfCode(M3 m3){				
 	linesOfCode2 = countSourceLocPerLanguage(m3);	
 	return linesOfCode2["java"];
+}
+
+//by Zarina E.
+public list[loc] getJavaFiles (loc dir){
+ return listJavaFiles = [ l | /file(l)  := crawl(dir), l.extension == "java"];
+}
+
+//by Zarina E.
+public int countLineOfCodeInProject(loc project){
+  int count = 0;
+  int count_comments = 0;
+  list[loc] allJavaFiles = getJavaFiles(project);
+  multipleLineComments = false;
+ 
+  for(content <- allJavaFiles){
+          // List of all lines from certain .java file
+   list[str]fileContent = readFileLines(content);
+   
+   for(i <- [0..size(fileContent)]){
+                   //count all lines.
+                   count +=1;
+
+        //check for multiple line comments starter
+       if(multipleLineComments==false && size(fileContent[i])>1 && 
+           (startsWith(trim(fileContent[i]),"/*"))) {                      
+                      multipleLineComments = true;
+                      //println("Start, count: <count_comments> and content: <fileContent[i]>");
+                       
+       }
+
+       // change state if multiple line comment ends. 
+       if(size(fileContent[i])>0 && (startsWith(trim(fileContent[i]), "*/")||
+        endsWith(trim(fileContent[i]), "*/"))) {
+                       count_comments +=1;
+                       multipleLineComments = false;
+                       //println("End. count: <count_comments> and content <fileContent[i]>");
+       }
+
+       // Counts lines in multiple-line comments, empty lines and single line comments
+       if (multipleLineComments == true || 
+          startsWith(trim(fileContent[i]), "//") ||
+          isEmpty(trim(fileContent[i]))) { 
+        count_comments +=1; 
+        //println("Inhoud: <fileContent[i]> and <count_comments>");
+        }
+   }
+  }
+  // total LOC minus counted lines of comments & empty lines
+  return count - count_comments;
+}
+
+str computeRatingLinesOfCode(int count, ratingSchema){	
+	if (count < ratingSchema["VERY_GOOD"]) {
+		return "++";
+	} else if (count < ratingSchema["GOOD"]) {
+		return "+";
+	} else if (count < ratingSchema["NEUTRAL"]) {
+		return "o";
+	} else if (count < ratingSchema["POOR"]) {
+		return "-";
+	} else {
+		return "--";
+	}
 }
 
 map[loc method, int count] countLinesOfCodePerMethod(M3 m3) {
@@ -75,12 +139,13 @@ str computeRatingLinesOfCodePerMethod(map[loc method, int count] methodLineCount
 		}		
 	}
 	
-	print("method ratings: "); println(methodRatings);
-	
 	//compute overal rating
+	analyzedSum = 0.0;
 	analyzedSum = methodRatings["VERY_GOOD"] 
 		+ methodRatings["GOOD"] + methodRatings["NEUTRAL"] + methodRatings["POOR"] + methodRatings["VERY_POOR"];
 		
+	print("Unit sizes: ");println(methodRatings);
+
 	if ((methodRatings["VERY_GOOD"]/analyzedSum * 100) > ratingSchema["VERY_GOOD"][0]
 		&& ((methodRatings["VERY_GOOD"] + methodRatings["GOOD"])/analyzedSum * 100) > ratingSchema["VERY_GOOD"][1]
 		&& ((methodRatings["VERY_GOOD"] + methodRatings["GOOD"] + methodRatings["NEUTRAL"])/analyzedSum * 100) > ratingSchema["VERY_GOOD"][2]
@@ -114,7 +179,7 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 	for (method <- methodsList) {
 		cyclomaticComplexity = 1;
 		
-		methodTree = getMethodASTEclipse(method);
+		//methodTree = getMethodASTEclipse(method);
 		
 		//visit(methodTree) {
 		//	case \if : println("MAMY IFA");
@@ -144,6 +209,63 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 	return result;
 }
 
+str computeRatingCyclomaticComplexityPerMethod(map[loc method, int count] methodComplexities, treshold, ratingSchema){
+	methodRatings = (
+		"NO_RISK": 0,
+		"MODERATE_RISK": 0,
+		"HIGH_RISK": 0,
+		"VERY_HIGH_RISK": 0
+	);	
+	
+	//compute metric per method
+	for (key <- methodComplexities) {	
+		if (methodComplexities[key] < treshold["NO_RISK"]) {
+			methodRatings["NO_RISK"] += 1;								
+		} else if (methodComplexities[key] < treshold["MODERATE_RISK"]) {
+			methodRatings["MODERATE_RISK"] += 1;
+		} else if (methodComplexities[key] < treshold["HIGH_RISK"]) {
+			methodRatings["HIGH_RISK"] += 1;			
+		} else {
+			methodRatings["VERY_HIGH_RISK"] += 1;
+		}		
+	}
+	
+	CYCLOMATIC_COMPLEXITY_RATING_SCHEMA = (
+		// RANK : [MODERATE_RISK %, HIGH_RISK %, VERY_HIGH_RISK %]
+		"VERY_GOOD": [25, 0, 0],
+		"GOOD": [30, 5, 0],
+		"NEUTRAL": [40, 10, 0],
+		"POOR": [50, 15, 5]
+	);
+	
+	//compute overal rating
+	analyzedSum = 0.0;
+	analyzedSum = methodRatings["NO_RISK"] 
+		+ methodRatings["MODERATE_RISK"] + methodRatings["HIGH_RISK"] + methodRatings["VERY_HIGH_RISK"];
+		
+	print("Complexity per unit: ");println(methodRatings);
+	
+	if (((methodRatings["MODERATE_RISK"])/analyzedSum * 100) <= ratingSchema["VERY_GOOD"][0]
+		&& (methodRatings["HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["VERY_GOOD"][1]
+		&& (methodRatings["VERY_HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["VERY_GOOD"][1]) {
+		return "++";
+	} else if (((methodRatings["MODERATE_RISK"])/analyzedSum * 100) <= ratingSchema["GOOD"][0]
+		&& (methodRatings["HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["GOOD"][1]
+		&& (methodRatings["VERY_HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["GOOD"][1]) {
+		return "+";
+	} else if (((methodRatings["MODERATE_RISK"])/analyzedSum * 100) <= ratingSchema["NEUTRAL"][0]
+		&& (methodRatings["HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["NEUTRAL"][1]
+		&& (methodRatings["VERY_HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["NEUTRAL"][1]) {
+		return "o";
+	} else if (((methodRatings["MODERATE_RISK"])/analyzedSum * 100) <= ratingSchema["POOR"][0]
+		&& (methodRatings["HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["POOR"][1]
+		&& (methodRatings["VERY_HIGH_RISK"]/analyzedSum * 100) <= ratingSchema["POOR"][1]) {
+		return "-";
+	} else {
+		return "--";
+	}
+}
+
 void computeMetrics(){
 
 	//OVERALL RESULT
@@ -157,6 +279,30 @@ void computeMetrics(){
 	);
 
 	//GLOBALS
+	VOLUME_TRESHOLD_VALUES = (
+		"VERY_GOOD": 66000,
+		"GOOD": 246000,
+		"NEUTRAL": 665000,
+		"POOR": 1310000
+		//"VERY_POOR"			
+	);
+	
+	
+	CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES = (
+		"NO_RISK": 10,
+		"MODERATE_RISK": 20,
+		"HIGH_RISK": 50
+		//"VERY_HIGH_RISK"
+	);
+	
+	CYCLOMATIC_COMPLEXITY_RATING_SCHEMA = (
+		// RANK : [MODERATE_RISK %, HIGH_RISK %, VERY_HIGH_RISK %]
+		"VERY_GOOD": [25, 0, 0],
+		"GOOD": [30, 5, 0],
+		"NEUTRAL": [40, 10, 0],
+		"POOR": [50, 15, 5]
+	);
+	
 	UNIT_SIZE_TRESHOLD_VALUES = (
 		"VERY_POOR": 500,
 		"POOR": 300,
@@ -173,18 +319,20 @@ void computeMetrics(){
 		"POOR": [10, 30, 50, 10, 0]
 	);
 	
-	testProjectLocation = |project://test_java_project|;
-	testProjectTree = createM3FromEclipseProject(testProjectLocation);
+	projectLocation = |project://test_java_project|;
+	projectTree = createM3FromEclipseProject(projectLocation);
 	
-	smallSqlProjectLocation = |project://smallsql0.21_src|;
-	smallSqlProjectTree = createM3FromEclipseProject(smallSqlProjectLocation);
+	//projectLocation = |project://smallsql0.21_src|;
+	//projectTree = createM3FromEclipseProject(projectLocation);
 	//
-	//hsqldbProjectLocation = |project://hsqldb-2.3.1|;
-	//hsqldbProjectTree = createM3FromEclipseProject(hsqldbProjectLocation);
-	
+	//projectLocation = |project://hsqldb-2.3.1|;
+	//projectTree = createM3FromEclipseProject(projectLocation);
+		
 	// compute LOC - write your own method?
-	//testProjectLOC = countLinesOfCode(testProjectTree);
-	//print("Test project: "); println(testProjectLOC);
+	//testProjectLOC = countLinesOfCode(testProjectTree);	
+	testProjectLOC = countLineOfCodeInProject(projectLocation);	
+	overallRating["VOLUME"] = 
+		computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
 		
 	//smallSqlProjectLOC = countLinesOfCode(smallSqlProjectLocation);	
 	//print("Small sql project: "); println(smallSqlProjectLOC);
@@ -197,7 +345,9 @@ void computeMetrics(){
 	// compute complexity per unit
 	//todo LH:build an ast tree
 	//visit case \if
-	//cyclomaticResult = computeCyclomaticComplexityPerMethod(testProjectTree);
+	cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
+	overallRating["COMPLEXITY_PER_UNIT"] = 
+		computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);
 		
 	//astTree = createAstsFromEclipseProject(testProjectLocation, true);
 	//println(astTree);
@@ -209,12 +359,13 @@ void computeMetrics(){
 	//compute duplication rating
 	
 	// compute unit size (LOC / unit)	
-	locResult = countLinesOfCodePerMethod(smallSqlProjectTree);
-	overallRating["UNIT_SIZE"] = computeRatingLinesOfCodePerMethod(locResult, UNIT_SIZE_TRESHOLD_VALUES, UNIT_SIZE_RATING_SCHEMA);	
+	locResult = countLinesOfCodePerMethod(projectTree);
 	//countLinesOfCodePerMethod(smallSqlProjectTree);
-	//countLinesOfCodePerMethod(hsqldbProjectTree);	
-	
+	//countLinesOfCodePerMethod(hsqldbProjectTree);
 	//compute unit size rating
+	overallRating["UNIT_SIZE"] = 
+		computeRatingLinesOfCodePerMethod(locResult, UNIT_SIZE_TRESHOLD_VALUES, UNIT_SIZE_RATING_SCHEMA);		
+		
 	
 	//print general results
 	for (key <- overallRating) {
