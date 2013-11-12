@@ -1,6 +1,5 @@
 module LinesOfCodes
 
-
 import IO;
 import List;
 import String;
@@ -29,21 +28,29 @@ public int countLineOfCodeInProject(loc project){
    for(i <- [0..size(fileContent)]){
    		//count all lines.
    		count +=1;
-        
+
         //check for multiple line comments starter
-        if(multipleLineComments==false && size(fileContent[i])>1 && 
-          startsWith(trim(fileContent[i]),"/*")) {     		 
-      		multipleLineComments = true; 		 
-       } 
+       if(multipleLineComments==false && size(fileContent[i])>1 && 
+           (startsWith(trim(fileContent[i]),"/*"))) {     		 
+      		multipleLineComments = true;
+      		println("Start, count: <count_comments> and content: <fileContent[i]>");
+      		 
+       }
+
        // change state if multiple line comment ends. 
-       if(size(fileContent[i])>0 && startsWith(trim(fileContent[i]), "*/")) {
+       if(size(fileContent[i])>0 && (startsWith(trim(fileContent[i]), "*/")||
+        endsWith(trim(fileContent[i]), "*/"))) {
        		count_comments +=1;
       		 multipleLineComments = false;
+      		 println("End. count: <count_comments> and content <fileContent[i]>");
        }
+
        // Counts lines in multiple-line comments, empty lines and single line comments
        if (multipleLineComments == true || 
-          startsWith(trim(fileContent[i]), "//") || isEmpty(trim(fileContent[i]))) { 
+          startsWith(trim(fileContent[i]), "//") ||
+          isEmpty(trim(fileContent[i]))) { 
         count_comments +=1; 
+        println("Inhoud: <fileContent[i]> and <count_comments>");
         }
    }
   }
@@ -56,6 +63,4 @@ public int countLineOfCodeInProject(loc project){
 void info(loc project) {
   printlnExp("The amount of LOC without empty lines and comments: ",countLineOfCodeInProject(project));
 }
-
-
 
