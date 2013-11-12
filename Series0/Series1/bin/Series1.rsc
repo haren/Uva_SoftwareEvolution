@@ -183,28 +183,16 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 		methodTree = getMethodASTEclipse(method);
 		
 		visit(methodTree) {
-			case \if : println("MAMY IFA");
-			case \for : println("Mamygo!");
+			case \if(_,_) : cyclomaticComplexity += 1;
+			case \if(_,_,_) : cyclomaticComplexity += 1;
+			case \do(_,_) : cyclomaticComplexity += 1;
+			case \foreach(_,_,_): cyclomaticComplexity += 1;
+			case \for(_,_,_): cyclomaticComplexity += 1;
+			case \for(_,_,_,_): cyclomaticComplexity += 1;	
+			case \switch(_,_): cyclomaticComplexity += 1;
+			case \while(_,_): cyclomaticComplexity += 1;
 		}
-		
-		result[method] = cyclomaticComplexity;
-		
-	 	//methodLines = readFileLines(method);
-	 	//	
-	 	//for (methodLine <- methodLines) {
-	 	//	trimmedLine = trim(methodLine);
- 		//  	if (contains(trimmedLine, "for")) {
- 		//  		cyclomaticComplexity += 1;	
- 		//  	} else if (contains(trimmedLine, "if")) { 		  	
- 		//  		cyclomaticComplexity += 1;
- 		//  	} else if (contains(trimmedLine, "case")) { 		  	
- 		//  		cyclomaticComplexity += 1;
- 		//  	} else if (contains(trimmedLine, "do")) { 		  	
- 		//  		cyclomaticComplexity += 1;
- 		//  	}
-	 	//}
-	 	//print(method); print(": "); println(cyclomaticComplexity); 
-	 	
+		result[method] = cyclomaticComplexity;		
 	 }
 	
 	return result;
@@ -323,8 +311,8 @@ void computeMetrics(){
 	projectLocation = |project://test_java_project|;
 	projectTree = createM3FromEclipseProject(projectLocation);
 	
-	//projectLocation = |project://smallsql0.21_src|;
-	//projectTree = createM3FromEclipseProject(projectLocation);
+	projectLocation = |project://smallsql0.21_src|;
+	projectTree = createM3FromEclipseProject(projectLocation);
 	//
 	//projectLocation = |project://hsqldb-2.3.1|;
 	//projectTree = createM3FromEclipseProject(projectLocation);

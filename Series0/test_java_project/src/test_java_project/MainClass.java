@@ -9,8 +9,15 @@ public class MainClass {
 		System.out.println("I am method 1!");
 		if(true) {
 			System.out.println("True!");			
+		} 
+		
+		for (int i=0; i<100; i++) {
+			System.out.println(";)!");
 		}
 		
+		do {
+		     ;
+		} while (false);
 		
 		// dupa gowno cycki
 	}
