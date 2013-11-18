@@ -60,15 +60,16 @@ public int countDuplications(loc project){
 	list[loc] allSixPlusMethods = toList(sixLinePlusMethods(project));
 	int count = 0;
 	list[str] methodContent = [];
+	tuple[int nrMethod, int nrLine, str contentLine] matrix;
 
 	for (i <-[0..size((allSixPlusMethods))] ) {
 		 methodContent = readFileLines(allSixPlusMethods[i]);
-		 println("<i> line: <methodContent>");
 		 	
 		 for(sizeOfMethod <- [0..size(methodContent)]){
-		 	println("Nr <i> methode. Nr <sizeOfMethod> line <methodContent[sizeOfMethod]>");
+		 	matrix = <i, sizeOfMethod, methodContent[sizeOfMethod] >;
+		 	
+
 		 }	
 	}		
 	return count; 
 }
-
