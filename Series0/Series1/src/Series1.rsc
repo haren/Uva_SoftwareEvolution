@@ -65,7 +65,7 @@ public int countLineOfCodeInProject(loc project){
 }
 
 str computeRatingLinesOfCode(int count, ratingSchema){	
-	println(count);
+	print("Lines of coded: "); println(count);
 	if (count < ratingSchema["VERY_GOOD"]) {
 		return "++";
 	} else if (count < ratingSchema["GOOD"]) {
@@ -191,6 +191,7 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 			case \for(_,_,_,_): cyclomaticComplexity += 1;	
 			case \switch(_,_): cyclomaticComplexity += 1;
 			case \while(_,_): cyclomaticComplexity += 1;
+			case \return(_): cyclomaticComplexity += 1;
 			case \infix(_, op, _, _): {
 				if (op == "||" || op == "&&") {
 					cyclomaticComplexity += 1;
@@ -198,14 +199,10 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 			}
 		}
 		result[method] = cyclomaticComplexity;
-		print(method); println(cyclomaticComplexity);
+		//print(method); println(cyclomaticComplexity);
 	 }
 	
 	return result;
-}
-
-int additionalConditions(Expression condition) {
-	return 0;
 }
 
 str computeRatingCyclomaticComplexityPerMethod(map[loc method, int count] methodComplexities, treshold, ratingSchema){
@@ -265,6 +262,95 @@ str computeRatingCyclomaticComplexityPerMethod(map[loc method, int count] method
 	}
 }
 
+real computeDuplication(loc project) {
+	blocksAnalyzed = 0.0;
+	blocksDuplicated = 0.0;
+	
+	list[tuple[str line, bool isDuplicate]] lines = [];
+	
+	list[loc] files = getJavaFiles(project);	
+	
+	// get all the lines for analysis
+	for (file <- files) {
+		multilineComment = false;
+		list[str] fileLines = readFileLines(file);		
+		for (line <- fileLines) {
+			//filter out comments and white lines			
+			//a little duplication here ;)
+			trimmedLine = trim(line); 		  	
+	 		if (size(trimmedLine) > 0 //filter out single lines
+	 			//filter out single line comments 
+	 			&& ((size(trimmedLine) > 1 && substring(trimmedLine,0,2) != "//") || size(trimmedLine) == 1)
+	 			//filter out multiline comments
+	 			&& !multilineComment) {
+	 			// check if multiline comment is starting 
+	 			if (size(trimmedLine) > 1 && substring(trimmedLine,0,2) == "/*") {
+	 				multilineComment = true;
+	 			}
+	 			else {
+	 				lines += <trimmedLine, false>;
+	 			}
+	 		}
+	 		if (multilineComment 
+	 			&& (size(trimmedLine) > 1 && substring(trimmedLine,0,2) == "*/")){
+	 			multilineComment = false;	 		
+	 		} 			
+		}		
+	}
+	
+	for (int i<- [0..size(lines)-6]) {		
+		for (int j<- [i+1..size(lines)-6]) {			
+			if (
+				lines[i].line == lines[j].line 
+				&& lines[i+1].line == lines[j+1].line
+				&& lines[i+2].line == lines[j+2].line
+				&& lines[i+3].line == lines[j+3].line
+				&& lines[i+4].line == lines[j+4].line
+				&& lines[i+5].line == lines[j+5].line
+			) {
+				lines[j].isDuplicate = true;
+				lines[j+1].isDuplicate = true;
+				lines[j+2].isDuplicate = true;
+				lines[j+3].isDuplicate = true;
+				lines[j+4].isDuplicate = true;
+				lines[j+5].isDuplicate = true;
+			}
+			//println(lines[i]);
+		}
+	}
+	
+	//compute statistics
+	for (int i <- [0..size(lines)]) {
+		blocksAnalyzed += 1;
+		if (lines[i].isDuplicate) {
+			blocksDuplicated += 1;
+		}
+		//println(lines[i]);
+	}	
+	
+		
+	if (blocksAnalyzed < 1.0) {
+		return 0.0;
+	} else {
+		return blocksDuplicated / blocksAnalyzed * 100;
+	}
+}
+
+str computeRatingDuplication(percentage, ratingSchema) {
+	print("Duplication: "); print(percentage); println("%");
+	if (percentage < ratingSchema["VERY_GOOD"]) {
+		return "++";
+	} else if (percentage < ratingSchema["GOOD"]) {
+		return "+";
+	} else if (percentage < ratingSchema["NEUTRAL"]) {
+		return "o";
+	} else if (percentage < ratingSchema["POOR"]) {
+		return "-";
+	} else {
+		return "--";
+	}
+}
+
 void computeMetrics(){
 
 	//OVERALL RESULT
@@ -318,6 +404,16 @@ void computeMetrics(){
 		"POOR": [10, 30, 50, 10, 0]
 	);
 	
+	DUPLICATION_TRESHOLD_VALUES = ( // in %
+		"VERY_GOOD": 3.0,
+		"GOOD": 5.0,
+		"NEUTRAL": 10.0,
+		"POOR": 20.0
+		//"VERY_POOR": 100.0			
+	);
+	
+	//project being tested
+	
 	projectLocation = |project://test_java_project|;
 	projectTree = createM3FromEclipseProject(projectLocation);
 	
@@ -326,41 +422,28 @@ void computeMetrics(){
 	//
 	//projectLocation = |project://hsqldb-2.3.1|;
 	//projectTree = createM3FromEclipseProject(projectLocation);
+	
+	//compute metrics
 		
-	// compute LOC - write your own method?
-	//testProjectLOC = countLinesOfCode(testProjectTree);	
-	testProjectLOC = countLineOfCodeInProject(projectLocation);	
+	// compute LOC	
+	testProjectLOC = countLineOfCodeInProject(projectLocation);
+	//compute loc rating	
 	overallRating["VOLUME"] = 
 		computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
 		
-	//smallSqlProjectLOC = countLinesOfCode(smallSqlProjectLocation);	
-	//print("Small sql project: "); println(smallSqlProjectLOC);
-	
-	//hsqldbProjectLOC = countLinesOfCode(hsqldbProjectLocation);	
-	//print("Hsqldb project: "); println(hsqldbProjectLOC);
-	
-	//compute loc rating 
-	
-	// compute complexity per unit
-	//todo LH:build an ast tree
-	//visit case \if
+	// compute complexity per unit	
 	cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
+	//compute complexity rating	
 	overallRating["COMPLEXITY_PER_UNIT"] = 
-		computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);
+		computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);		
 		
-	//astTree = createAstsFromEclipseProject(testProjectLocation, true);
-	//println(astTree);
-	
-	//compute complexity rating
-	
 	//compute duplication
-	
+	duplicationPercentage = computeDuplication(projectLocation);	
 	//compute duplication rating
+	overallRating["DUPLICATION"] = computeRatingDuplication(duplicationPercentage, DUPLICATION_TRESHOLD_VALUES);
 	
 	// compute unit size (LOC / unit)	
 	locResult = countLinesOfCodePerMethod(projectTree);
-	//countLinesOfCodePerMethod(smallSqlProjectTree);
-	//countLinesOfCodePerMethod(hsqldbProjectTree);
 	//compute unit size rating
 	overallRating["UNIT_SIZE"] = 
 		computeRatingLinesOfCodePerMethod(locResult, UNIT_SIZE_TRESHOLD_VALUES, UNIT_SIZE_RATING_SCHEMA);		
