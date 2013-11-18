@@ -41,7 +41,7 @@ public int countMethods(loc project) {
    return count;  
 }
 
-// Count just all lines... in methods
+// Count just all lines... in methods (todo: comments & empty lines has to be filtered out.)
 public int countLinesMethods(loc method) {
   int count = 0;
    for(i <-[0..size(readFileLines(method))]){
@@ -53,6 +53,25 @@ public int countLinesMethods(loc method) {
 // Get methods with 6+lines.
 public set[loc] sixLinePlusMethods(loc project) {
 	set[loc] allMethods = methods(project);
-	return { x | x <- allMethods, countLinesMethods(x) > 6 };
+	return { n | n <- allMethods, countLinesMethods(n) > 6 };
 }
 
+
+
+public int countDuplications(loc project){
+	list[loc] allSixPlusMethods = toList(sixLinePlusMethods(project));
+	int count = 0;
+	list[str] methodContent = [];
+	tuple[int nrMethod, int nrLine, str contentLine] matrix;
+
+	for (i <-[0..size((allSixPlusMethods))] ) {
+		 methodContent = readFileLines(allSixPlusMethods[i]);
+		 	
+		 for(sizeOfMethod <- [0..size(methodContent)]){
+		 	matrix = <i, sizeOfMethod, methodContent[sizeOfMethod] >;
+		 	
+
+		 }	
+	}		
+	return count; 
+}
