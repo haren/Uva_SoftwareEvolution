@@ -33,4 +33,5 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 
-Series0/.metadata/**
+*/.metadata/**
+*/*.metadata/**

@@ -191,11 +191,21 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 			case \for(_,_,_,_): cyclomaticComplexity += 1;	
 			case \switch(_,_): cyclomaticComplexity += 1;
 			case \while(_,_): cyclomaticComplexity += 1;
+			case \infix(_, op, _, _): {
+				if (op == "||" || op == "&&") {
+					cyclomaticComplexity += 1;
+				} 				
+			}
 		}
-		result[method] = cyclomaticComplexity;		
+		result[method] = cyclomaticComplexity;
+		print(method); println(cyclomaticComplexity);
 	 }
 	
 	return result;
+}
+
+int additionalConditions(Expression condition) {
+	return 0;
 }
 
 str computeRatingCyclomaticComplexityPerMethod(map[loc method, int count] methodComplexities, treshold, ratingSchema){
@@ -311,8 +321,8 @@ void computeMetrics(){
 	projectLocation = |project://test_java_project|;
 	projectTree = createM3FromEclipseProject(projectLocation);
 	
-	projectLocation = |project://smallsql0.21_src|;
-	projectTree = createM3FromEclipseProject(projectLocation);
+	//projectLocation = |project://smallsql0.21_src|;
+	//projectTree = createM3FromEclipseProject(projectLocation);
 	//
 	//projectLocation = |project://hsqldb-2.3.1|;
 	//projectTree = createM3FromEclipseProject(projectLocation);

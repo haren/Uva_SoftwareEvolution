@@ -7,7 +7,7 @@ public class MainClass {
 	
 	public static void method1(){
 		System.out.println("I am method 1!");
-		if(true) {
+		if(true && true || false) {
 			System.out.println("True!");			
 		} 
 		
