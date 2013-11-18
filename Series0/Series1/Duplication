@@ -1,0 +1,58 @@
+module Duplication
+
+import IO;
+import List;
+import String;
+import util::FileSystem;
+import lang::java::jdt::m3::Core;
+import lang::java::jdt::m3::AST;
+import lang::java::m3::AST;
+import lang::java::m3::Core;
+import analysis::m3::Core;
+
+public loc project1 = |project://LittleJavaProject/|;
+public loc project2 = |project://smallsql0.21_src/|;
+public loc project3 = |project://hsqldb-2.3.1/|;
+
+// List of all .java files
+public list[loc] getJavaFiles (loc dir){
+ return listJavaFiles = [ l | /file(l)  := crawl(dir), l.extension == "java"];
+}
+
+public M3 model(loc location) {
+	M3 model = createM3FromEclipseProject(location);
+	return model;
+}
+
+// All methodes in the project.
+public set[loc] methods(loc project) {
+	M3 model = model(project);
+	return methods(model);
+}
+
+// Count all methods
+public int countMethods(loc project) {
+  set[loc] allMethods = methods(project);
+  int count = 0;
+   
+   for(content <- allMethods){
+     count +=1;
+   }
+   return count;  
+}
+
+// Count just all lines... in methods
+public int countLinesMethods(loc method) {
+  int count = 0;
+   for(i <-[0..size(readFileLines(method))]){
+     count +=1;
+   }
+   return count;  
+}
+
+// Get methods with 6+lines.
+public set[loc] sixLinePlusMethods(loc project) {
+	set[loc] allMethods = methods(project);
+	return { x | x <- allMethods, countLinesMethods(x) > 6 };
+}
+
