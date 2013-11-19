@@ -262,11 +262,12 @@ str computeRatingCyclomaticComplexityPerMethod(map[loc method, int count] method
 	}
 }
 
-real computeDuplication(loc project) {
+real computeDuplication(loc project, int ploc) {
 	blocksAnalyzed = 0.0;
 	blocksDuplicated = 0.0;
 	
-	list[tuple[str line, bool isDuplicate]] lines = [];
+	list[str line] lines = [];
+	map[str line, bool isDuplicate] duplicatedLines = ();
 	
 	list[loc] files = getJavaFiles(project);	
 	
@@ -288,7 +289,7 @@ real computeDuplication(loc project) {
 	 				multilineComment = true;
 	 			}
 	 			else {
-	 				lines += <trimmedLine, false>;
+	 				lines = lines + trimmedLine;
 	 			}
 	 		}
 	 		if (multilineComment 
@@ -298,42 +299,44 @@ real computeDuplication(loc project) {
 		}		
 	}
 	
-	for (int i<- [0..size(lines)-6]) {		
-		for (int j<- [i+1..size(lines)-6]) {			
-			if (
-				lines[i].line == lines[j].line 
-				&& lines[i+1].line == lines[j+1].line
-				&& lines[i+2].line == lines[j+2].line
-				&& lines[i+3].line == lines[j+3].line
-				&& lines[i+4].line == lines[j+4].line
-				&& lines[i+5].line == lines[j+5].line
-			) {
-				lines[j].isDuplicate = true;
-				lines[j+1].isDuplicate = true;
-				lines[j+2].isDuplicate = true;
-				lines[j+3].isDuplicate = true;
-				lines[j+4].isDuplicate = true;
-				lines[j+5].isDuplicate = true;
+	duplicates = true;
+	blockLength = 6;
+	while (duplicates) {
+		print("Looking for duplicates of length "); println(blockLength);
+		duplicates = false;
+		//check for duplications
+		for (int i<- [0..size(lines)-blockLength]) {
+			//compute new key
+			key = "";
+			for (int j <- [i..i+blockLength]) {
+				key = key + lines[j];
+			}			
+				
+			if ((key) in duplicatedLines) {
+				duplicatedLines[key] = true;
+				duplicates = true;		
+			} else {
+				duplicatedLines[key] = false;
 			}
-			//println(lines[i]);
 		}
+		blockLength = blockLength + 1;
 	}
 	
 	//compute statistics
-	for (int i <- [0..size(lines)]) {
+	for (str key <- [k | k <- duplicatedLines]){
 		blocksAnalyzed += 1;
-		if (lines[i].isDuplicate) {
+		if (duplicatedLines[key]) {
 			blocksDuplicated += 1;
 		}
-		//println(lines[i]);
+		//print(key); print(" "); println(duplicatedLines[key]);
 	}	
-	
-		
-	if (blocksAnalyzed < 1.0) {
-		return 0.0;
-	} else {
-		return blocksDuplicated / blocksAnalyzed * 100;
-	}
+			
+	//if (blocksAnalyzed < 1.0) {
+	//	return 0.0;
+	//} else {
+	//	return blocksDuplicated / blocksAnalyzed * 100;
+	//}
+	return blocksDuplicated / ploc * 100;
 }
 
 str computeRatingDuplication(percentage, ratingSchema) {
@@ -416,10 +419,10 @@ void computeMetrics(){
 	
 	projectLocation = |project://test_java_project|;
 	projectTree = createM3FromEclipseProject(projectLocation);
-	
-	//projectLocation = |project://smallsql0.21_src|;
-	//projectTree = createM3FromEclipseProject(projectLocation);
 	//
+	projectLocation = |project://smallsql0.21_src|;
+	projectTree = createM3FromEclipseProject(projectLocation);
+	
 	//projectLocation = |project://hsqldb-2.3.1|;
 	//projectTree = createM3FromEclipseProject(projectLocation);
 	
@@ -428,17 +431,17 @@ void computeMetrics(){
 	// compute LOC	
 	testProjectLOC = countLineOfCodeInProject(projectLocation);
 	//compute loc rating	
-	overallRating["VOLUME"] = 
-		computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
+	//overallRating["VOLUME"] = 
+	//	computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
 		
 	// compute complexity per unit	
-	cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
+	//cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
 	//compute complexity rating	
-	overallRating["COMPLEXITY_PER_UNIT"] = 
-		computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);		
+	//overallRating["COMPLEXITY_PER_UNIT"] = 
+	//	computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);		
 		
 	//compute duplication
-	duplicationPercentage = computeDuplication(projectLocation);	
+	duplicationPercentage = computeDuplication(projectLocation, testProjectLOC);	
 	//compute duplication rating
 	overallRating["DUPLICATION"] = computeRatingDuplication(duplicationPercentage, DUPLICATION_TRESHOLD_VALUES);
 	
