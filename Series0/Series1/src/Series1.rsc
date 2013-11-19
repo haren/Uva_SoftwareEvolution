@@ -320,15 +320,16 @@ real computeDuplication(loc project, int ploc) {
 			}
 		}
 		blockLength = blockLength + 1;
-	}
-	
-	//compute statistics
-	for (str key <- [k | k <- duplicatedLines]){
-		blocksAnalyzed += 1;
-		if (duplicatedLines[key]) {
-			blocksDuplicated += 1;
+		
+		//compute statistics
+		for (str key <- [k | k <- duplicatedLines]){
+			blocksAnalyzed += 1;
+			if (duplicatedLines[key]) {
+				blocksDuplicated += 1;
+			}
+			//print(key); print(" "); println(duplicatedLines[key]);
 		}
-		//print(key); print(" "); println(duplicatedLines[key]);
+		duplicatedLines = ();
 	}	
 			
 	//if (blocksAnalyzed < 1.0) {
@@ -420,11 +421,11 @@ void computeMetrics(){
 	projectLocation = |project://test_java_project|;
 	projectTree = createM3FromEclipseProject(projectLocation);
 	//
-	projectLocation = |project://smallsql0.21_src|;
-	projectTree = createM3FromEclipseProject(projectLocation);
-	
-	//projectLocation = |project://hsqldb-2.3.1|;
+	//projectLocation = |project://smallsql0.21_src|;
 	//projectTree = createM3FromEclipseProject(projectLocation);
+	
+	projectLocation = |project://hsqldb-2.3.1|;
+	projectTree = createM3FromEclipseProject(projectLocation);
 	
 	//compute metrics
 		
