@@ -60,18 +60,34 @@ public set[loc] sixLinePlusMethods(loc project) {
 
 public int countDuplications(loc project){
 	list[loc] allSixPlusMethods = toList(sixLinePlusMethods(project));
+	int amountMethods = size(allSixPlusMethods); 
 	int count = 0;
-	list[str] methodContent = [];
-	tuple[int nrMethod, int nrLine, str contentLine] matrix;
-
-	for (i <-[0..size((allSixPlusMethods))] ) {
-		 methodContent = readFileLines(allSixPlusMethods[i]);
-		 	
-		 for(sizeOfMethod <- [0..size(methodContent)]){
-		 	matrix = <i, sizeOfMethod, methodContent[sizeOfMethod] >;
-		 	
-
-		 }	
-	}		
+	int countDuplications = 0;
+	list[tuple[str perLine, int methodNr]] method = [];
+    int sizeOfMethod= size(readFileLines(allSixPlusMethods[count]));
+	
+	for(content <- allSixPlusMethods){
+	  list[str]methodContent = readFileLines(content);
+	   
+	   // Method line + number of that method
+  	   for(perLine <- methodContent) {
+        method += <perLine, count>;     
+      } 
+      count +=1;
+     }
+     //Comparation
+	 for(sizeMethod <- [0..size(method)]){	       
+	 	for (i <-[0..sizeMethod] ) {
+		 for (j <-[i+1..sizeMethod] ) {
+		  if((method[i].methodNr != method[j].methodNr) && 
+		     (method[i].perLine == method[j].perLine)){
+		    
+		   println("bingo: <method[i]> and <method[j]>");
+		   countDuplications +=1;
+		  }
+		 }
+	   }	
+	  println(countDuplications);
+	} 
 	return count; 
 }
