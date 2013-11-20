@@ -190,8 +190,8 @@ map[loc method, int complexity] computeCyclomaticComplexityPerMethod(M3 m3) {
 			case \for(_,_,_): cyclomaticComplexity += 1;
 			case \for(_,_,_,_): cyclomaticComplexity += 1;	
 			case \switch(_,_): cyclomaticComplexity += 1;
-			case \while(_,_): cyclomaticComplexity += 1;
-			case \return(_): cyclomaticComplexity += 1;
+			case \while(_,_): cyclomaticComplexity += 1;			
+			// try catch, switch ++ depending on number of cases			
 			case \infix(_, op, _, _): {
 				if (op == "||" || op == "&&") {
 					cyclomaticComplexity += 1;
@@ -363,8 +363,8 @@ void computeMetrics(){
 		"VOLUME" : "",
 		"COMPLEXITY_PER_UNIT": "",
 		"DUPLICATION" : "",
-		"UNIT_SIZE" : "",
-		"UNIT_TESTING" : ""
+		"UNIT_SIZE" : ""
+		//"UNIT_TESTING" : ""
 	);
 
 	//GLOBALS
@@ -418,15 +418,15 @@ void computeMetrics(){
 	
 	//project being tested
 	
-	projectLocation = |project://test_java_project|;
-	projectTree = createM3FromEclipseProject(projectLocation);
+	//projectLocation = |project://test_java_project|;
+	//projectTree = createM3FromEclipseProject(projectLocation);
 	//
 	//projectLocation = |project://smallsql0.21_src|;
 	//projectTree = createM3FromEclipseProject(projectLocation);
 	
 	projectLocation = |project://hsqldb-2.3.1|;
 	projectTree = createM3FromEclipseProject(projectLocation);
-	
+	//
 	//compute metrics
 		
 	// compute LOC	
@@ -434,7 +434,7 @@ void computeMetrics(){
 	//compute loc rating	
 	//overallRating["VOLUME"] = 
 	//	computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
-		
+	//	
 	// compute complexity per unit	
 	//cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
 	//compute complexity rating	
@@ -454,6 +454,7 @@ void computeMetrics(){
 		
 	
 	//print general results
+	println();
 	for (key <- overallRating) {
 		println("<key>: <overallRating[key]>");
 	}	
