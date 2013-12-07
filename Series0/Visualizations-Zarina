@@ -40,7 +40,7 @@ public int countLinesMethods(loc method) {
 // ------ Series 2
 
 
- public Figures h(loc project) {
+ public Figures methodsBox(loc project) {
   list[loc] allJavaFiles = getJavaFiles(project);
   list[loc] allMethods = toList(methods(project));
   map[loc method, int count] locPerMethod = countLinesOfCodePerMethod(createM3FromEclipseProject(project));
@@ -48,38 +48,42 @@ public int countLinesMethods(loc method) {
   
   Figures boxes= []; 
   legenda1 =text("Architectural information about <project>", fontSize(15), fontColor("blue"));
-  legenda2 =text("Cyclomatic complexity rating schema. Green box = Very good. Yellow box = Good. Orange box = Neutral. Red box = Poor.", 
+  legenda2 =text("Lines of code in this project: <countLineOfCodeInProject(project)>", fontSize(10), fontColor("blue"));
+  legenda3 =text("Cyclomatic complexity rating schema. Green box = Very good. Yellow box = Good. Orange box = Neutral. Red box = Poor.", 
   				 fontSize(10), fontColor("black"));
-  boxes += vcat([legenda1, legenda2],std(center()));
-
+  boxes += vcat([legenda1, legenda2, legenda3],std(top()),std(hcenter()));
   
    for( methods <- locPerMethod) {
   	 int height = 10 + locPerMethod[methods]; //depends on LOC of a method
   	 int colors = ccPerMethod[methods];
+  //	 println("<methods>  en locPerMethod[methods]);
   	 boxes += box([size(40, height), 
-  	 			  resizable(false), 
+  	 			  resizable(false),
+  	 			  top(), 
   	 			  fillColor(color(controlCC(colors))),
-			      onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
-			 		edit(resolveJava(methods)); //here is some bug, always last method
-			 		return true;
-				  })
+				  onMouseDownAction(methods)
 	 			 ]);
 	 }
 
 	return boxes;
  }
+ // to make box click-able
+ public FProperty onMouseDownAction(loc method){
+ 	return onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+		edit(resolveJava(method)); 
+		return true;
+	});
+ }
  
 // Color the box, depending on cyclomaticComplexity results 
 public str controlCC(int cc){
-        if( cc <= 1 ) return "Green";
-        else if( cc <= 2 ) return "Yellow";
+        if( cc <= 25 ) return "Green";
+        else if( cc <= 30 ) return "Yellow";
         else if( cc <= 40 ) return "Orange";
         else return "Red";
 }
 
  public void Visualize(loc files){
-	output = pack( h(files), std(gap(10)));
-	render(output);
+	output = vcat( methodsBox(files), std(gap(10)), std(left()));
+	render("Visualization of <files>", output);
 }
-public loc project1 = |project://LittleJavaProject/|;
- 
