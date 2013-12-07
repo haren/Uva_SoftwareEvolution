@@ -1,0 +1,85 @@
+module Visualizations
+
+import vis::Figure;
+import vis::Render;
+import Prelude;
+import vis::KeySym;
+import lang::java::m3::AST;
+import lang::java::m3::Core;
+import lang::java::jdt::m3::Core;
+import lang::java::jdt::m3::AST;
+import util::FileSystem;
+import util::Editors;
+import lang::java::m3::Registry;
+import Set;
+import Map;
+
+
+import Series1; 
+
+public M3 model(loc location) {
+	M3 model = createM3FromEclipseProject(location);
+	return model;
+}
+
+// All methodes in the project.
+public set[loc] methods(loc project) {
+	M3 model = model(project);
+	return methods(model);
+}
+
+// Count just all lines... in methods (todo: comments & empty lines has to be filtered out.)
+// To be used other method, made by Lukasz or to be modified.
+public int countLinesMethods(loc method) {
+  int count = 0;
+   for(i <-[0..size(readFileLines(method))]){
+     count +=1;
+   }
+   return count;  
+}
+// ------ Series 2
+
+
+ public Figures h(loc project) {
+  list[loc] allJavaFiles = getJavaFiles(project);
+  list[loc] allMethods = toList(methods(project));
+  map[loc method, int count] locPerMethod = countLinesOfCodePerMethod(createM3FromEclipseProject(project));
+  map[loc method, int count] ccPerMethod = computeCyclomaticComplexityPerMethod(createM3FromEclipseProject(project));
+  
+  Figures boxes= []; 
+  legenda1 =text("Architectural information about <project>", fontSize(15), fontColor("blue"));
+  legenda2 =text("Cyclomatic complexity rating schema. Green box = Very good. Yellow box = Good. Orange box = Neutral. Red box = Poor.", 
+  				 fontSize(10), fontColor("black"));
+  boxes += vcat([legenda1, legenda2],std(center()));
+
+  
+   for( methods <- locPerMethod) {
+  	 int height = 10 + locPerMethod[methods]; //depends on LOC of a method
+  	 int colors = ccPerMethod[methods];
+  	 boxes += box([size(40, height), 
+  	 			  resizable(false), 
+  	 			  fillColor(color(controlCC(colors))),
+			      onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+			 		edit(resolveJava(methods)); //here is some bug, always last method
+			 		return true;
+				  })
+	 			 ]);
+	 }
+
+	return boxes;
+ }
+ 
+// Color the box, depending on cyclomaticComplexity results 
+public str controlCC(int cc){
+        if( cc <= 1 ) return "Green";
+        else if( cc <= 2 ) return "Yellow";
+        else if( cc <= 40 ) return "Orange";
+        else return "Red";
+}
+
+ public void Visualize(loc files){
+	output = pack( h(files), std(gap(10)));
+	render(output);
+}
+public loc project1 = |project://LittleJavaProject/|;
+ 
