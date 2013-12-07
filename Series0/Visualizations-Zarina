@@ -48,7 +48,8 @@ public int countLinesMethods(loc method) {
   
   Figures boxes= []; 
   legenda1 =text("Architectural information about <project>", fontSize(15), fontColor("blue"));
-  legenda2 =text("Lines of code in this project: <countLineOfCodeInProject(project)>", fontSize(10), fontColor("blue"));
+  legenda2 =text("Lines of code in this project: <countLineOfCodeInProject(project)>.
+When hovering over a box, extra information about that method will be provided.", fontSize(10), fontColor("indigo"));
   legenda3 =text("Cyclomatic complexity rating schema. Green box = Very good. Yellow box = Good. Orange box = Neutral. Red box = Poor.", 
   				 fontSize(10), fontColor("black"));
   boxes += vcat([legenda1, legenda2, legenda3],std(top()),std(hcenter()));
@@ -61,7 +62,8 @@ public int countLinesMethods(loc method) {
   	 			  resizable(false),
   	 			  top(), 
   	 			  fillColor(color(controlCC(colors))),
-				  onMouseDownAction(methods)
+				  onMouseDownAction(methods),
+				  extraInfo("<methods>", locPerMethod[methods] ,0) //TODO add cc value
 	 			 ]);
 	 }
 
@@ -75,6 +77,15 @@ public int countLinesMethods(loc method) {
 	});
  }
  
+ public FProperty extraInfo(str nameMethod,int methodLOC, int cc){
+         return mouseOver(box(text("Method: <nameMethod>\n" + 
+         						   "LOC: <methodLOC>\n" + 
+         						   "Cyclomatic complexity: <cc>",
+         						   font("Osaka")),size(10,10), grow(1.1), right(),
+         						   fillColor("whitesmoke"),resizable(false)));
+
+}
+ 
 // Color the box, depending on cyclomaticComplexity results 
 public str controlCC(int cc){
         if( cc <= 25 ) return "Green";
@@ -87,3 +98,5 @@ public str controlCC(int cc){
 	output = vcat( methodsBox(files), std(gap(10)), std(left()));
 	render("Visualization of <files>", output);
 }
+public loc project1 = |project://LittleJavaProject/|;
+ 
