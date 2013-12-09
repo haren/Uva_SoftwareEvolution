@@ -33,6 +33,18 @@ public int computeOverallProjectScore(map[str,str] sigScores, map[str, list[int]
 	return rgb(r,g,b);
 }
 
+public void renderGeneralProjectsTree(list[Figure] titles){
+	render(
+		tree(titles[0], 
+		[
+			titles[1],
+			titles[2],
+			titles[3]				
+		], 
+		std(gap(50)))
+	);
+}
+
 public void main(){	
 	/*
 		GLOBALS
@@ -88,6 +100,8 @@ public void main(){
 		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1))		
 	];
 	
+	println(typeOf(titles));
+	
 	boxesTestProject = [];
 	boxesSmallSql = [];	
 	boxesHsqldb = [];
@@ -103,15 +117,17 @@ public void main(){
 		boxesHsqldb += box(text("<key>"),left(),top(),fillColor(COLORS[overallRating_hsqldb[key]]),shrink(0.4));				
 	}
 	
-	render(
-		tree(titles[0], 
-		[
-			tree(titles[1], boxesTestProject, std(gap(50))),
-			tree(titles[2], boxesSmallSql, std(gap(50))),
-			tree(titles[3], boxesHsqldb, std(gap(50))),
-			tree(titles[3], [(pack(boxesHsqldb, std(gap(50))))], std(gap(50)))		
-		], 
-		std(gap(50)))
-	);
+	renderGeneralProjectsTree(titles);
+	
+	//render(
+	//	tree(titles[0], 
+	//	[
+	//		tree(titles[1], boxesTestProject, std(gap(50))),
+	//		tree(titles[2], boxesSmallSql, std(gap(50))),
+	//		tree(titles[3], boxesHsqldb, std(gap(50))),
+	//		tree(titles[3], [(pack(boxesHsqldb, std(gap(50))))], std(gap(50)))		
+	//	], 
+	//	std(gap(50)))
+	//);
 			
 }
