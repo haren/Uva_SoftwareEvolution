@@ -45,6 +45,18 @@ public void renderGeneralProjectsTree(list[Figure] titles){
 	);
 }
 
+ public FProperty mouseOverInfo(str S, Color color){
+	return mouseOver(
+		box(text(S), fillColor(color), width(100), height(10))
+	);
+ }
+ 
+ public FProperty mouseClick(str S, Color color){
+	return mouseOver(
+		box(text(S), fillColor(color), size(10))
+	);
+ }
+ 
 public void main(){	
 	/*
 		GLOBALS
@@ -74,9 +86,7 @@ public void main(){
 		"UNIT_SIZE": "+",
 		"VOLUME": "++",
 		"COMPLEXITY_PER_UNIT": "++"
-	);
-	
-	print(typeOf(overallRating_testProject));	
+	);	
 	
 	overallRating_smallSql = (
 		"DUPLICATION": "o",
@@ -95,12 +105,10 @@ public void main(){
 		
 	titles = [
 		box(text("Projects"), fillColor("white"),shrink(0.4)),
-		box(text("Test project"), fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)),shrink(0.1)),
-		box(text("Small sql"), fillColor(computeOverallProjectScore(overallRating_smallSql, COLORS_ARRAY)),shrink(0.1)),
-		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1))		
-	];
-	
-	println(typeOf(titles));
+		box(text("Test project"), fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)),shrink(0.1), mouseOverInfo("Click for details", rgb(255,255,255))),
+		box(text("Small sql"), fillColor(computeOverallProjectScore(overallRating_smallSql, COLORS_ARRAY)),shrink(0.1), mouseOverInfo("Click for details", rgb(255,255,255))),
+		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1), mouseOverInfo("Click for details", rgb(255,255,255)))		
+	];	
 	
 	boxesTestProject = [];
 	boxesSmallSql = [];	
