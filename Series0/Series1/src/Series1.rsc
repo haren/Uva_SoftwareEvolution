@@ -355,7 +355,7 @@ str computeRatingDuplication(percentage, ratingSchema) {
 	}
 }
 
-void computeMetrics(){
+map[str, str] computeMetrics(){
 
 	//OVERALL RESULT
 	// volume, complexity per unit, duplication, unit size, unit testing
@@ -418,28 +418,28 @@ void computeMetrics(){
 	
 	//project being tested
 	
-	//projectLocation = |project://test_java_project|;
-	//projectTree = createM3FromEclipseProject(projectLocation);
-	//
+	projectLocation = |project://test_java_project|;
+	projectTree = createM3FromEclipseProject(projectLocation);
+	
 	//projectLocation = |project://smallsql0.21_src|;
 	//projectTree = createM3FromEclipseProject(projectLocation);
 	
-	projectLocation = |project://hsqldb-2.3.1|;
-	projectTree = createM3FromEclipseProject(projectLocation);
+	//projectLocation = |project://hsqldb-2.3.1|;
+	//projectTree = createM3FromEclipseProject(projectLocation);
 	//
 	//compute metrics
 		
 	// compute LOC	
 	testProjectLOC = countLineOfCodeInProject(projectLocation);
 	//compute loc rating	
-	//overallRating["VOLUME"] = 
-	//	computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
-	//	
+	overallRating["VOLUME"] = 
+		computeRatingLinesOfCode(testProjectLOC, VOLUME_TRESHOLD_VALUES);
+		
 	// compute complexity per unit	
-	//cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
+	cyclomaticResult = computeCyclomaticComplexityPerMethod(projectTree);
 	//compute complexity rating	
-	//overallRating["COMPLEXITY_PER_UNIT"] = 
-	//	computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);		
+	overallRating["COMPLEXITY_PER_UNIT"] = 
+		computeRatingCyclomaticComplexityPerMethod(cyclomaticResult, CYCLOMATIC_COMPLEXITY_TRESHOLD_VALUES, CYCLOMATIC_COMPLEXITY_RATING_SCHEMA);		
 		
 	//compute duplication
 	duplicationPercentage = computeDuplication(projectLocation, testProjectLOC);	
@@ -455,7 +455,9 @@ void computeMetrics(){
 	
 	//print general results
 	println();
-	for (key <- overallRating) {
-		println("<key>: <overallRating[key]>");
-	}	
+	//for (key <- overallRating) {
+	//	println("<key>: <overallRating[key]>");
+	//}
+	
+	return overallRating;
 }
