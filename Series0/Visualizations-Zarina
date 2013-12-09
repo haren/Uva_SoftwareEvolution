@@ -1,0 +1,102 @@
+module Visualizations
+
+import vis::Figure;
+import vis::Render;
+import Prelude;
+import vis::KeySym;
+import lang::java::m3::AST;
+import lang::java::m3::Core;
+import lang::java::jdt::m3::Core;
+import lang::java::jdt::m3::AST;
+import util::FileSystem;
+import util::Editors;
+import lang::java::m3::Registry;
+import Set;
+import Map;
+
+
+import Series1; 
+
+public M3 model(loc location) {
+	M3 model = createM3FromEclipseProject(location);
+	return model;
+}
+
+// All methodes in the project.
+public set[loc] methods(loc project) {
+	M3 model = model(project);
+	return methods(model);
+}
+
+// Count just all lines... in methods (todo: comments & empty lines has to be filtered out.)
+// To be used other method, made by Lukasz or to be modified.
+public int countLinesMethods(loc method) {
+  int count = 0;
+   for(i <-[0..size(readFileLines(method))]){
+     count +=1;
+   }
+   return count;  
+}
+// ------ Series 2
+
+
+ public Figures methodsBox(loc project) {
+  list[loc] allJavaFiles = getJavaFiles(project);
+  list[loc] allMethods = toList(methods(project));
+  map[loc method, int count] locPerMethod = countLinesOfCodePerMethod(createM3FromEclipseProject(project));
+  map[loc method, int count] ccPerMethod = computeCyclomaticComplexityPerMethod(createM3FromEclipseProject(project));
+  
+  Figures boxes= []; 
+  legenda1 =text("Architectural information about <project>", fontSize(15), fontColor("blue"));
+  legenda2 =text("Lines of code in this project: <countLineOfCodeInProject(project)>.
+When hovering over a box, extra information about that method will be provided.", fontSize(10), fontColor("indigo"));
+  legenda3 =text("Cyclomatic complexity rating schema. Green box = Very good. Yellow box = Good. Orange box = Neutral. Red box = Poor.", 
+  				 fontSize(10), fontColor("black"));
+  boxes += vcat([legenda1, legenda2, legenda3],std(top()),std(hcenter()));
+  
+   for( methods <- locPerMethod) {
+  	 int height = 10 + locPerMethod[methods]; //depends on LOC of a method
+  	 int colors = ccPerMethod[methods];
+  //	 println("<methods>  en locPerMethod[methods]);
+  	 boxes += box([size(40, height), 
+  	 			  resizable(false),
+  	 			  top(), 
+  	 			  fillColor(color(controlCC(colors))),
+				  onMouseDownAction(methods),
+				  extraInfo("<methods>", locPerMethod[methods] ,0) //TODO add cc value
+	 			 ]);
+	 }
+
+	return boxes;
+ }
+ // to make box click-able
+ public FProperty onMouseDownAction(loc method){
+ 	return onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+		edit(resolveJava(method)); 
+		return true;
+	});
+ }
+ 
+ public FProperty extraInfo(str nameMethod,int methodLOC, int cc){
+         return mouseOver(box(text("Method: <nameMethod>\n" + 
+         						   "LOC: <methodLOC>\n" + 
+         						   "Cyclomatic complexity: <cc>",
+         						   font("Osaka")),size(10,10), grow(1.1), right(),
+         						   fillColor("whitesmoke"),resizable(false)));
+
+}
+ 
+// Color the box, depending on cyclomaticComplexity results 
+public str controlCC(int cc){
+        if( cc <= 25 ) return "Green";
+        else if( cc <= 30 ) return "Yellow";
+        else if( cc <= 40 ) return "Orange";
+        else return "Red";
+}
+
+ public void Visualize(loc files){
+	output = vcat( methodsBox(files), std(gap(10)), std(left()));
+	render("Visualization of <files>", output);
+}
+public loc project1 = |project://LittleJavaProject/|;
+ 
