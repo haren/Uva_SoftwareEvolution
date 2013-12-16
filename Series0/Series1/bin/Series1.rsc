@@ -6,6 +6,7 @@ import analysis::m3::Core;
 import analysis::m3::metrics::LOC;
 import IO;
 import Set;
+import Type;
 import List;
 import String;
 import util::FileSystem;
@@ -17,7 +18,24 @@ int countLinesOfCode(M3 m3){
 
 //by Zarina E.
 public list[loc] getJavaFiles (loc dir){
- return listJavaFiles = [ l | /file(l)  := crawl(dir), l.extension == "java"];
+ return listJavaFiles = [ l | /file(l)  := crawl(dir)];
+}
+
+public map[str extension, int count] getFilesPerProject(loc project){
+
+	projectFiles = getJavaFiles(project);	
+		
+	fileTypes = ();
+		
+	for (f <- projectFiles) {
+		if (f.extension in [k | k <- fileTypes]){
+			fileTypes[f.extension] = fileTypes[f.extension] + 1;
+		} else {
+			fileTypes[f.extension] = 1;
+		}
+	}
+	
+	return fileTypes;
 }
 
 //by Zarina E.
