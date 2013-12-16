@@ -126,7 +126,7 @@ public Figures packagesBox(loc project) {
  
  leftVert = hcat([output, legendaSide]);
  totalView = vcat([legendaTop, leftVert], std(gap(10)), std(left()), std(top()));
- return render("Visualization of packages", totalView);
+ return render("Visualization of classes", totalView);
 
 }
 
