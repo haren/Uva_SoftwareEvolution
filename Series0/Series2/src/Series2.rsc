@@ -5,6 +5,7 @@ import vis::FigureSWTApplet;
 import vis::ParseTree;
 import vis::Render;
 import Series1;
+import Series2_Zarina;
 import IO;
 import Set;
 import List;
@@ -34,11 +35,9 @@ public int computeOverallProjectScore(map[str,str] sigScores, map[str, list[int]
 	return rgb(r,g,b);
 }
 
- public FProperty renderGeneralProjectsTreeOnClick(list[Figure] titles){
- 	print("rendering titles: ");println(titles);
+ public FProperty renderGeneralProjectsTreeOnClick(list[Figure] titles){ 	
 	return onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {			
-		renderGeneralProjectsTree(titles);
-		//render(box(text("haha")));
+		renderGeneralProjectsTree(titles);		
 		return true;
 	});
  }
@@ -163,7 +162,7 @@ public void main(){
 		"DUPLICATION": "11.5440595500%",
 		"UNIT_SIZE": "GOOD: 381,\nVERY_POOR : 1,\nNEUTRAL : 111,\nVERY_GOOD : 1899,\nPOOR : 8",
 		"VOLUME": "Lines of code: 24047",
-		"COMPLEXITY_PER_UNIT": "NO_RISK : 2308,\nHIGH_RISK : 27,\nMODERATE_RISK : 63,\nVERY_HIGH_RISK : 2)"
+		"COMPLEXITY_PER_UNIT": "NO_RISK : 2308,\nHIGH_RISK : 27,\nMODERATE_RISK : 63,\nVERY_HIGH_RISK : 2"
 	);
 	
 	overallRating_hsqldb = (
@@ -175,9 +174,9 @@ public void main(){
 	
 	exactValues_hsqldb = (
 		"DUPLICATION": "9.12310595500%",
-		"UNIT_SIZE": "NO_RISK : 10172,\nHIGH_RISK : 149,\nMODERATE_RISK : 510,\nVERY_HIGH_RISK : 29)",
+		"UNIT_SIZE": "NO_RISK : 10172,\nHIGH_RISK : 149,\nMODERATE_RISK : 510,\nVERY_HIGH_RISK : 29",
 		"VOLUME": "Lines of code: 172331",
-		"COMPLEXITY_PER_UNIT": "NO_RISK : 6932,\nHIGH_RISK : 1242,\nMODERATE_RISK : 1555,\nVERY_HIGH_RISK : 1078)"
+		"COMPLEXITY_PER_UNIT": "NO_RISK : 6932,\nHIGH_RISK : 1242,\nMODERATE_RISK : 1555,\nVERY_HIGH_RISK : 1078"
 	);
 	
 	boxesTestProject = [];
@@ -224,9 +223,33 @@ public void main(){
 		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1), 
 			mouseOverInfo("Click for details", rgb(255,255,255)), resizable(false), gap(50), mouseClick(box(text("Hsqldb"), 
 			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4), gap(50)), boxesHsqldb))	
-	];		
+	];
 	
-	//renderGeneralProjectsTree(titles);
-	renderPack(titles);		
-			
+	mainMap = treemap([
+		box(text("SIG Metrics (All)", fontSize(15)), shrink(0.8),area(30),fillColor("lightgreen"),
+			mouseOverInfo("Click for details", rgb(255,255,255)),
+			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+				renderGeneralProjectsTree(titles);
+				return true;
+			})
+		),
+        box(vcat([
+            	text("Classes and methods"),
+            	treemap([
+            		box(text("Test Project"), area(5), fillColor("purple")),
+            		box(text("Small sql"), area(10), fillColor("orange")),
+            		box(text("Hsqldb"),area(15), fillColor("green"))
+        		])
+            ],shrink(0.8)),area(30),fillColor("lightblue")),
+	    box(vcat([
+            	text("File types"),
+            	treemap([
+            		box(text("Test Project"), area(5), fillColor("purple")),
+            		box(text("Small sql"), area(10), fillColor("orange")),
+            		box(text("Hsqldb"),area(15), fillColor("green"))
+        		])
+            ],shrink(0.8)),area(30),fillColor("lightblue"))
+	]);
+	
+	render(mainMap);			
 }
