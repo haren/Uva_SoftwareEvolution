@@ -13,6 +13,12 @@ import util::FileSystem;
 import Type;
 import vis::KeySym;
 
+public void testFig(){
+    Figure f = box(size(200,200), resizable(false), mouseOver(box(text("bla"),shrink(0.9))));
+	render(f);
+	
+}
+
 public int computeOverallProjectScore(map[str,str] sigScores, map[str, list[int]] colors) {
 	r = 0;
 	g = 0;
@@ -42,7 +48,7 @@ public void renderGeneralProjectsTree(list[Figure] titles){
 			titles[2],
 			titles[3]				
 		], 
-		std(gap(50)))
+		gap(50))
 	);
 }
 
@@ -54,7 +60,7 @@ public void renderProjectDetaisTree(Figure titleBox, list[Figure] boxes){
 
  public FProperty mouseOverInfo(str S, Color color){
 	return mouseOver(
-		box(text(S), fillColor(color), grow(1.1), resizable(false))
+		box(text(S), fillColor(color), resizable(false), grow(1.5))
 	);
  }
  
@@ -127,18 +133,18 @@ public void main(){
 
 		
 	titles = [
-		box(text("Projects"), fillColor("white"),shrink(0.4)),
+		box(text("Projects"), fillColor("white"),shrink(0.4), resizable(false), gap(50)),
 		
-		box(text("Test project"), fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)),shrink(0.1), 
-			mouseOverInfo("Click for details", rgb(255,255,255)), mouseClick(box(text("Test project"), 
-			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesTestProject)),
+		box(text("Test project"), fillColor(computeOverallProjectScore(overallRating_smallSql, COLORS_ARRAY)), shrink(0.1), 
+			mouseOverInfo("Click for details", rgb(255,255,255)), resizable(false), gap(50), mouseClick(box(text("Small sql"), 
+			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesSmallSql)),
 			
 		box(text("Small sql"), fillColor(computeOverallProjectScore(overallRating_smallSql, COLORS_ARRAY)),shrink(0.1), 
-			mouseOverInfo("Click for details", rgb(255,255,255)), mouseClick(box(text("Small sql"), 
+			mouseOverInfo("Click for details", rgb(255,255,255)), resizable(false), gap(50), mouseClick(box(text("Small sql"), 
 			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesSmallSql)),
 			
 		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1), 
-			mouseOverInfo("Click for details", rgb(255,255,255)), mouseClick(box(text("Hsqldb"), 
+			mouseOverInfo("Click for details", rgb(255,255,255)), resizable(false), gap(50), mouseClick(box(text("Hsqldb"), 
 			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesHsqldb))	
 	];		
 	
