@@ -11,6 +11,7 @@ import List;
 import String;
 import util::FileSystem;
 import Type;
+import vis::KeySym;
 
 public int computeOverallProjectScore(map[str,str] sigScores, map[str, list[int]] colors) {
 	r = 0;
@@ -45,16 +46,23 @@ public void renderGeneralProjectsTree(list[Figure] titles){
 	);
 }
 
+public void renderProjectDetaisTree(Figure titleBox, list[Figure] boxes){
+	render(
+		tree(titleBox, boxes, std(gap(50)))		
+	);
+}
+
  public FProperty mouseOverInfo(str S, Color color){
 	return mouseOver(
-		box(text(S), fillColor(color), width(100), height(10))
+		box(text(S), fillColor(color), grow(1.1), resizable(false))
 	);
  }
  
- public FProperty mouseClick(str S, Color color){
-	return mouseOver(
-		box(text(S), fillColor(color), size(10))
-	);
+ public FProperty mouseClick(Figure titleBox, list[Figure] boxes){
+	return onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+			renderProjectDetaisTree(titleBox, boxes);
+			return true;
+	});
  }
  
 public void main(){	
@@ -101,14 +109,6 @@ public void main(){
 		"VOLUME": "+",
 		"COMPLEXITY_PER_UNIT": "++"
 	);
-
-		
-	titles = [
-		box(text("Projects"), fillColor("white"),shrink(0.4)),
-		box(text("Test project"), fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)),shrink(0.1), mouseOverInfo("Click for details", rgb(255,255,255))),
-		box(text("Small sql"), fillColor(computeOverallProjectScore(overallRating_smallSql, COLORS_ARRAY)),shrink(0.1), mouseOverInfo("Click for details", rgb(255,255,255))),
-		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1), mouseOverInfo("Click for details", rgb(255,255,255)))		
-	];	
 	
 	boxesTestProject = [];
 	boxesSmallSql = [];	
@@ -124,18 +124,24 @@ public void main(){
 	for (key <- overallRating_hsqldb) {
 		boxesHsqldb += box(text("<key>"),left(),top(),fillColor(COLORS[overallRating_hsqldb[key]]),shrink(0.4));				
 	}
+
+		
+	titles = [
+		box(text("Projects"), fillColor("white"),shrink(0.4)),
+		
+		box(text("Test project"), fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)),shrink(0.1), 
+			mouseOverInfo("Click for details", rgb(255,255,255)), mouseClick(box(text("Test project"), 
+			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesTestProject)),
+			
+		box(text("Small sql"), fillColor(computeOverallProjectScore(overallRating_smallSql, COLORS_ARRAY)),shrink(0.1), 
+			mouseOverInfo("Click for details", rgb(255,255,255)), mouseClick(box(text("Small sql"), 
+			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesSmallSql)),
+			
+		box(text("Hsqldb"), fillColor(computeOverallProjectScore(overallRating_hsqldb, COLORS_ARRAY)),shrink(0.1), 
+			mouseOverInfo("Click for details", rgb(255,255,255)), mouseClick(box(text("Hsqldb"), 
+			fillColor(computeOverallProjectScore(overallRating_testProject, COLORS_ARRAY)), shrink(0.4)), boxesHsqldb))	
+	];		
 	
-	renderGeneralProjectsTree(titles);
-	
-	//render(
-	//	tree(titles[0], 
-	//	[
-	//		tree(titles[1], boxesTestProject, std(gap(50))),
-	//		tree(titles[2], boxesSmallSql, std(gap(50))),
-	//		tree(titles[3], boxesHsqldb, std(gap(50))),
-	//		tree(titles[3], [(pack(boxesHsqldb, std(gap(50))))], std(gap(50)))		
-	//	], 
-	//	std(gap(50)))
-	//);
+	renderGeneralProjectsTree(titles);		
 			
 }
