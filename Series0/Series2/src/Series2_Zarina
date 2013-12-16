@@ -59,28 +59,9 @@ public int countLinesMethods(loc method) {
 }
 // ------ Series 2
 
-public Figures mainScreen (loc project) {
-  Figures options = [];
-  legenda1 =text("Architectural information about <project>", fontSize(15), fontColor("blue"));
-  legenda2 =text("Lines of code in this project: <countLineOfCodeInProject(project)>.\n" +
-				 "When hovering over a box, extra information about class of its methods will be provided.", 
-  				 fontSize(10), fontColor("black"));
-  options += vcat([vcat([legenda1, legenda2],std(top()),std(hcenter())),
-  					hcat([ 
-  					 box(text("Packages"),size(100,50), fillColor("red"),
-  					 onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
-						packagesBox(project); 
-						return true;
-					 })),
-			         box(size(100, 50), fillColor("blue")),
-			         box(size(100,50), fillColor("green"))])
-			       ],
-			     std(top()), std(gap(10)),std(resizable(false))
-		);
-  return options;
-}
-//Packages paradise 
-public Figures packagesBox(loc project) {
+
+//Boxes paradise 
+public void Visualize(loc project) {
   M3 myModel = model(project);
   list[loc] allPackages = toList(packages(myModel));
   map[loc method, int count] methodsInClass = methodsPerClass((project));
@@ -109,24 +90,26 @@ public Figures packagesBox(loc project) {
 
  for(class <- allClasses) {
    list[loc] methoden = ( [ e | e <- myModel@containment[class], e.scheme == "java+method" || e.scheme == "java+constructor"]);
-   
+
+
    classBoxes += (box(vcat([
    				    // methods or constructor, build it
    				    checkIn(methods, ccPerMethod[methods], locPerMethod[methods], project)| methods <- methoden ]),     	
-  	 			//  extraInfoClass(class, size(methoden)),
+  	 			  extraInfoClass(class, size(methoden)),
   	 			  size(10,10),
   	 			  lineWidth(5), 
   	 			  resizable(false),
+  	 			  onMouseDownAction(class),
   	 			  fillColor("antiquewhite"),
   	 			  lineColor("black"))
   	 			  );				  	
   }
   legendaSide = hvcat(legendaBoxes, hshrink(0.2));  // legenda
-  output = pack(classBoxes, gap(8),std(gap(5)), std(left())); // main visualization of classes and methods.
+  output = pack(classBoxes, gap(8), std(gap(5)), std(left())); // main visualization of classes and methods.
  
  leftVert = hcat([output, legendaSide]);
  totalView = vcat([legendaTop, leftVert], std(gap(10)), std(left()), std(top()));
- return render("Visualization of classes", totalView);
+ return render("Visualization of packages", totalView);
 
 }
 
@@ -202,12 +185,7 @@ public str extractName(loc location) {
     return extracted;
 }
 
- public void Visualize(loc files){
- //	output = vcat(methodsBox(files), gap(10));
-    output = vcat(mainScreen(files), gap(10));
- //   output = vcat(packagesBox(files), gap(10));
-	render("Visualization of <files>", output);
-}
+
 public loc project1 = |project://LittleJavaProject/|;
 public loc project2 = |project://smallsql0.21_src/|;
  
