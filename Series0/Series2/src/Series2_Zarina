@@ -117,11 +117,12 @@ public Figures packagesBox(loc project) {
   	 			  size(10,10),
   	 			  lineWidth(5), 
   	 			  resizable(false),
+  	 			  fillColor("antiquesmoke"),
   	 			  lineColor("black"))
   	 			  );				  	
   }
   legendaSide = hvcat(legendaBoxes, hshrink(0.2));  // legenda
-  output = pack(classBoxes, std(gap(5)), std(left())); // main visualization of classes and methods.
+  output = pack(classBoxes, gap(8),std(gap(5)), std(left())); // main visualization of classes and methods.
  
  leftVert = hcat([output, legendaSide]);
  totalView = vcat([legendaTop, leftVert], std(gap(10)), std(left()), std(top()));
