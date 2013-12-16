@@ -184,6 +184,4 @@ public str extractName(loc location) {
 	}
     return extracted;
 }
-
-public loc project2 = |project://smallsql0.21_src/|;
  

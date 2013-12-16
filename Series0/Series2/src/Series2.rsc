@@ -111,10 +111,11 @@ public void main(){
 		GLOBALS
 	*/	
 	
-	testProjectFileTypes = ("classpath":1,"project":1,"class":1,"java":1,"prefs":1);
-	
-	smallSqlProjectFileTypes =  ("classpath":1,"jar":1,"project":1,"class":196,"java":186,"txt":2,"prefs":1);
-	
+	testProjectLoc = |project://test_java_project|;
+	smallSqlprojectLoc = |project://smallsql0.21_src/|;
+	hsqldbProjectLoc = |project://hsqldb-2.3.1|;
+	testProjectFileTypes = ("classpath":1,"project":1,"class":1,"java":1,"prefs":1);	
+	smallSqlProjectFileTypes =  ("classpath":1,"jar":1,"project":1,"class":196,"java":186,"txt":2,"prefs":1);	
 	hsqldbProjectFileTypes = ("pl":1,"cmd":10,"flex":2,"php":1,"class":742,"properties":36,"pdf":2,"rc":2,"txt":91,"prefs":1,"text":70,"ddl":3,"html":201,"png":44,"svg":48,"cfg":4,"c":1,"xhtml":1,"java":547,"zip":1,"nsql":6,"list":1,"classpath":1,"inter":5,"jar":10,"project":1,"bnd":1,"xml":17,"bat":6,"bash":2,"tif":5,"xsl":5,"setting":1,"init":2,"groovy":3,"plist":1,"sql":72,"py":2,"gradle":5,"dsv":12,"csv":1,"isql":6,"gif":48,"css":2,"":3);
 		
 	COLORS = (
@@ -236,17 +237,56 @@ public void main(){
         box(vcat([
             	text("Classes and methods"),
             	treemap([
-            		box(text("Test Project"), area(5), fillColor("purple")),
-            		box(text("Small sql"), area(10), fillColor("orange")),
-            		box(text("Hsqldb"),area(15), fillColor("green"))
+            		box(
+            			text("Test Project"), area(5), fillColor("purple"),
+            			mouseOverInfo("Click for details", rgb(255,255,255)),
+            			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+							drawClassMap(testProjectLoc);
+							return true;
+						})            			
+            		),
+            		box(
+            			text("Small sql"), area(10), fillColor("orange"),
+            			mouseOverInfo("Click for details", rgb(255,255,255)),
+            			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+							drawClassMap(smallSqlProjectLoc);
+							return true;
+						})
+        			),
+            		box(
+            			text("Hsqldb"),area(15), fillColor("green"),
+            			mouseOverInfo("Click for details", rgb(255,255,255)),
+            			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+							drawClassMap(hsqldblProjectLoc);
+							return true;
+						})
+        			)
         		])
             ],shrink(0.8)),area(30),fillColor("lightblue")),
 	    box(vcat([
             	text("File types"),
             	treemap([
-            		box(text("Test Project"), area(5), fillColor("purple")),
-            		box(text("Small sql"), area(10), fillColor("orange")),
-            		box(text("Hsqldb"),area(15), fillColor("green"))
+            		box(
+            			text("Test Project"), area(5), fillColor("lightgreen"), mouseOverInfo("Click for details", rgb(255,255,255)),
+            			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+							renderPack(prepareFileTypeBoxes(testProjectFileTypes));
+							return true;
+						})            			
+            		),
+            		box(
+            			text("Small sql"), area(10), fillColor("lightgreen"), mouseOverInfo("Click for details", rgb(255,255,255)),
+            			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+							renderPack(prepareFileTypeBoxes(smallSqlProjectFileTypes));
+							return true;
+						})
+        			),
+            		box(
+            			text("Hsqldb"),area(15), fillColor("lightgreen"), mouseOverInfo("Click for details", rgb(255,255,255)),
+            			onMouseDown(bool (int butnr, map[KeyModifier,bool] modifiers) {
+							renderPack(prepareFileTypeBoxes(hsqldbProjectFileTypes));
+							return true;
+						})
+        			)
         		])
             ],shrink(0.8)),area(30),fillColor("lightblue"))
 	]);
