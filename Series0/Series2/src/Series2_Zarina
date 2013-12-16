@@ -117,7 +117,7 @@ public Figures packagesBox(loc project) {
   	 			  size(10,10),
   	 			  lineWidth(5), 
   	 			  resizable(false),
-  	 			  fillColor("antiquesmoke"),
+  	 			  fillColor("antiquewhite"),
   	 			  lineColor("black"))
   	 			  );				  	
   }
